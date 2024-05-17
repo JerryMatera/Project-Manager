@@ -6,10 +6,14 @@ import io.github.jerrymatera.projectsmanager.data.network.model.LoginRequest
 import io.github.jerrymatera.projectsmanager.data.network.model.NetworkResponse
 import io.github.jerrymatera.projectsmanager.data.network.model.RegisterRequest
 import io.github.jerrymatera.projectsmanager.data.network.model.User
+import io.github.jerrymatera.projectsmanager.data.preferences.UserPrefsStore
 import io.github.jerrymatera.projectsmanager.data.utils.NetworkResult
 import io.github.jerrymatera.projectsmanager.domain.repository.AuthenticationRepository
 
-class AuthenticationRepositoryImpl(val responseHandler: ResponseHandler) :
+class AuthenticationRepositoryImpl(
+    private val responseHandler: ResponseHandler,
+    private val userPrefsStore: UserPrefsStore
+) :
     AuthenticationRepository {
     override suspend fun register(
         username: String,
@@ -39,6 +43,10 @@ class AuthenticationRepositoryImpl(val responseHandler: ResponseHandler) :
             password = password
         )
     )
+
+    override suspend fun saveAccessToken(accessToken: String) {
+        userPrefsStore.setAccessToken(accessToken)
+    }
 
     override suspend fun currentUser(): NetworkResult<NetworkResponse<User>> = responseHandler.get(
         listOf("current_user")

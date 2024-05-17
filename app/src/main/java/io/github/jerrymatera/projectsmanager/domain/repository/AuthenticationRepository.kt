@@ -18,5 +18,6 @@ interface AuthenticationRepository {
         password: String
     ): NetworkResult<NetworkResponse<AccessToken>>
 
-    suspend fun currentUser():NetworkResult<NetworkResponse<User>>
+    suspend fun saveAccessToken(accessToken: String)
+    suspend fun currentUser(): NetworkResult<NetworkResponse<User>>
 }

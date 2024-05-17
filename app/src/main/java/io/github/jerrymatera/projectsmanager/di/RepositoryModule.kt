@@ -5,5 +5,5 @@ import io.github.jerrymatera.projectsmanager.domain.repository.AuthenticationRep
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    single<AuthenticationRepository> { AuthenticationRepositoryImpl(get()) }
+    single<AuthenticationRepository> { AuthenticationRepositoryImpl(get(), get()) }
 }
