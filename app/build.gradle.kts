@@ -71,6 +71,7 @@ dependencies {
     implementation(libs.ktor.client.logging)
 
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.ui.text.google.fonts)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
