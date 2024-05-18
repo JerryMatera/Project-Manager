@@ -7,10 +7,14 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import io.github.jerrymatera.projectsmanager.presentation.screens.archives.ArchivedProjectsScreen
+import io.github.jerrymatera.projectsmanager.presentation.screens.createproject.CreateProjectScreen
 import io.github.jerrymatera.projectsmanager.presentation.screens.home.HomeScreen
+import io.github.jerrymatera.projectsmanager.presentation.screens.home.HomeViewModel
 import io.github.jerrymatera.projectsmanager.presentation.screens.login.LoginScreen
 import io.github.jerrymatera.projectsmanager.presentation.screens.login.LoginViewModel
 import io.github.jerrymatera.projectsmanager.presentation.screens.register.RegisterScreen
+import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
 @Composable
@@ -36,7 +40,19 @@ fun AppNavGraph(
             RegisterScreen()
         }
         composable(route = ScreenRoutes.Home.route) {
-            HomeScreen()
+            val viewModel: HomeViewModel = koinViewModel()
+            val state = viewModel.state.collectAsState()
+            HomeScreen(
+                state = state.value,
+                performEvent = viewModel::performEvent,
+                navHostController
+            )
+        }
+        composable(route = ScreenRoutes.Archives.route) {
+            ArchivedProjectsScreen()
+        }
+        composable(route = ScreenRoutes.CreateProject.route) {
+            CreateProjectScreen()
         }
     }
 }

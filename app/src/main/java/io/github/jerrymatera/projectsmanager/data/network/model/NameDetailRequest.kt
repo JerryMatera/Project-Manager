@@ -1,11 +1,13 @@
 package io.github.jerrymatera.projectsmanager.data.network.model
 
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class NameDetailRequest(
-    @SerializedName("description")
+    @SerialName("description")
     val description: String,
-    @SerializedName("name")
+    @SerialName("name")
     val name: String
 )

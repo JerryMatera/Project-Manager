@@ -29,11 +29,11 @@ class ProjectsRepositoryImpl(private val responseHandler: ResponseHandler) : Pro
             urlPathSegments = listOf("archived-projects")
         )
 
-    override suspend fun archiveProject(projectId: String): NetworkResult<NetworkResponse<Nothing>> =
-        responseHandler.delete(
-            urlPathSegments = listOf("projects", projectId),
-            body = null
-        )
+//    override suspend fun archiveProject(projectId: String): NetworkResult<NetworkResponse<Nothing?>> =
+//        responseHandler.delete(
+//            urlPathSegments = listOf("projects", projectId),
+//            body = null
+//        )
 
     override suspend fun updateProject(
         projectId: String,
@@ -46,9 +46,9 @@ class ProjectsRepositoryImpl(private val responseHandler: ResponseHandler) : Pro
             description = description
         )
     )
-
-    override suspend fun unArchiveProject(projectId: String): NetworkResult<NetworkResponse<Nothing>> =
-        responseHandler.put(
-            urlPathSegments = listOf("unarchive-project", projectId),
-        )
+//
+//    override suspend fun unArchiveProject(projectId: String): NetworkResult<NetworkResponse<Nothing>> =
+//        responseHandler.put(
+//            urlPathSegments = listOf("unarchive-project", projectId),
+//        )
 }
