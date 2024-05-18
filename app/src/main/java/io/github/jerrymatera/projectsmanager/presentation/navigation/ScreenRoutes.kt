@@ -5,5 +5,5 @@ sealed class ScreenRoutes(val route: String) {
     data object Register : ScreenRoutes("register")
     data object Home : ScreenRoutes("home")
     data object Archives : ScreenRoutes("archives")
-    data object CreateProject : ScreenRoutes("create-project")
+    data object ViewProject : ScreenRoutes("projects/{project_id}")
 }

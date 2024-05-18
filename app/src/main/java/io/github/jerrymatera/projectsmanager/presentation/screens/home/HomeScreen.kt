@@ -4,10 +4,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -22,7 +20,6 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Warning
-import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -104,7 +101,14 @@ fun HomeScreen(
                     contentPadding = PaddingValues(horizontal = 16.dp)
                 ) {
                     items(state.projects) { project ->
-                        ProjectCard(project = project, onClick = { /*TODO*/ })
+                        ProjectCard(
+                            project = project,
+                            onClick = {
+                                val route =
+                                    ScreenRoutes.ViewProject.route.replace("{project_id}", project.uuid)
+                                navHostController.navigate(route)
+                            }
+                        )
                     }
                 }
             }
@@ -138,7 +142,7 @@ fun HomeScreen(
             ModalBottomSheet(
                 onDismissRequest = { showBottomSheet = false },
                 sheetState = sheetState,
-                modifier  = Modifier.imePadding()
+                modifier = Modifier.imePadding()
             )
             {
                 Column(modifier = Modifier.fillMaxWidth()) {
@@ -165,7 +169,9 @@ fun HomeScreen(
                             Column(
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center,
-                                modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp)
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 16.dp)
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.CheckCircle,
@@ -194,8 +200,10 @@ fun HomeScreen(
                                         .padding(vertical = 16.dp)
                                 )
                                 Text(text = state.projectCreationError)
-                                Button(onClick = { performEvent(HomeEvent.ClearProjectCreationError) },
-                                    modifier = Modifier.padding(vertical = 16.dp)) {
+                                Button(
+                                    onClick = { performEvent(HomeEvent.ClearProjectCreationError) },
+                                    modifier = Modifier.padding(vertical = 16.dp)
+                                ) {
                                     Text(text = "Try again")
                                 }
                             }
