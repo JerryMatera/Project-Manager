@@ -13,9 +13,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.MoreVert
@@ -46,7 +46,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import io.github.jerrymatera.projectsmanager.presentation.navigation.ScreenRoutes
+import io.github.jerrymatera.projectsmanager.domain.toRoute
+import io.github.jerrymatera.projectsmanager.presentation.navigation.Archives
 import io.github.jerrymatera.projectsmanager.presentation.ui.theme.ProjectsManagerTheme
 import kotlinx.coroutines.launch
 
@@ -67,7 +68,7 @@ fun HomeScreen(
             HomeTopAppBar(
                 username = state.user?.username ?: "",
                 goToProfile = { /*TODO*/ },
-                goToArchives = { navHostController.navigate(route = ScreenRoutes.Archives.route) })
+                goToArchives = { navHostController.navigate(Archives) })
         },
         floatingActionButton = {
             IconButton(onClick = { showBottomSheet = true }) {
@@ -89,12 +90,17 @@ fun HomeScreen(
                     .padding(bottom = 8.dp)
             ) {
                 Text(text = "Projects")
-                IconButton(onClick = { showBottomSheet = true }) {
-                    Icon(imageVector = Icons.Default.ArrowForward, contentDescription = null)
+                IconButton(onClick = { }) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                        contentDescription = null
+                    )
                 }
             }
             if (state.projects.isNullOrEmpty()) {
-                EmptyItemCard(title = "You have no projects yet", onAddClick = { /*TODO*/ })
+                EmptyItemCard(
+                    title = "You have no projects yet",
+                    onAddClick = { showBottomSheet = true })
             } else {
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -103,11 +109,7 @@ fun HomeScreen(
                     items(state.projects) { project ->
                         ProjectCard(
                             project = project,
-                            onClick = {
-                                val route =
-                                    ScreenRoutes.ViewProject.route.replace("{project_id}", project.uuid)
-                                navHostController.navigate(route)
-                            }
+                            onClick = { navHostController.navigate(project.toRoute()) }
                         )
                     }
                 }
@@ -120,8 +122,11 @@ fun HomeScreen(
                     .padding(vertical = 8.dp)
             ) {
                 Text(text = "Recent tasks")
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(imageVector = Icons.Default.ArrowForward, contentDescription = null)
+                IconButton(onClick = { }) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                        contentDescription = null
+                    )
                 }
             }
             if (state.tasks.isNullOrEmpty()) {

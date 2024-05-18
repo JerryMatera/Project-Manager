@@ -13,7 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import io.github.jerrymatera.projectsmanager.presentation.navigation.ScreenRoutes
+import io.github.jerrymatera.projectsmanager.presentation.navigation.Home
+import io.github.jerrymatera.projectsmanager.presentation.navigation.Register
 
 @Composable
 fun LoginScreen(
@@ -23,7 +24,7 @@ fun LoginScreen(
     modifier: Modifier = Modifier
 ) {
     if (state.authenticated) {
-        navHostController.navigate(ScreenRoutes.Home.route) {
+        navHostController.navigate(Home) {
             popUpToRoute
         }
     }
@@ -52,7 +53,7 @@ fun LoginScreen(
             }
             Text(
                 text = "Don't have an account? Sign up",
-                modifier = Modifier.clickable { navHostController.navigate(route = ScreenRoutes.Register.route) })
+                modifier = Modifier.clickable { navHostController.navigate(Register) })
         }
     }
 }

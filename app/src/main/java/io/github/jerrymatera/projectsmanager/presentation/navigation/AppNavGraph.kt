@@ -2,12 +2,14 @@ package io.github.jerrymatera.projectsmanager.presentation.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import io.github.jerrymatera.projectsmanager.data.network.model.Project
+import io.github.jerrymatera.projectsmanager.domain.toProject
 import io.github.jerrymatera.projectsmanager.presentation.screens.archives.ArchivedProjectsScreen
 import io.github.jerrymatera.projectsmanager.presentation.screens.home.HomeScreen
 import io.github.jerrymatera.projectsmanager.presentation.screens.home.HomeViewModel
@@ -27,10 +29,10 @@ fun AppNavGraph(
     val navHostController = rememberNavController()
     NavHost(
         navController = navHostController,
-        startDestination = ScreenRoutes.Login.route,
+        startDestination = Login,
         modifier = modifier.fillMaxSize()
     ) {
-        composable(route = ScreenRoutes.Login.route) {
+        composable<Login> {
             val viewModel: LoginViewModel = koinInject<LoginViewModel>()
             val state = viewModel.state.collectAsStateWithLifecycle()
             LoginScreen(
@@ -39,10 +41,10 @@ fun AppNavGraph(
                 navHostController
             )
         }
-        composable(route = ScreenRoutes.Register.route) {
+        composable<Register> {
             RegisterScreen()
         }
-        composable(route = ScreenRoutes.Home.route) {
+        composable<Home> {
             val viewModel: HomeViewModel = koinViewModel()
             val state = viewModel.state.collectAsStateWithLifecycle()
             HomeScreen(
@@ -51,13 +53,13 @@ fun AppNavGraph(
                 navHostController
             )
         }
-        composable(route = ScreenRoutes.Archives.route) {
+        composable<Archives> {
             ArchivedProjectsScreen()
         }
-        composable(route = ScreenRoutes.ViewProject.route) {
-            val projectId = it.arguments?.getString("project_id")!!
+        composable<ProjectRoute> {
+            val project = it.toRoute<ProjectRoute>()
             val viewModel: ProjectViewModel = koinViewModel(
-                parameters = { parametersOf(projectId) }
+                parameters = { parametersOf(project.toProject()) }
             )
             val state = viewModel.state.collectAsStateWithLifecycle()
             ProjectScreen(
