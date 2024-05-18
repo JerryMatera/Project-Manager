@@ -17,7 +17,11 @@ import io.github.jerrymatera.projectsmanager.data.network.model.Task
 import io.github.jerrymatera.projectsmanager.presentation.ui.theme.ProjectsManagerTheme
 
 @Composable
-fun TaskCard(task: Task, modifier: Modifier = Modifier) {
+fun TaskCard(
+    task: Task,
+    modifier: Modifier = Modifier,
+    hideProjectNames: Boolean = false
+) {
     Card(
         modifier = modifier
             .fillMaxWidth(),
@@ -28,10 +32,12 @@ fun TaskCard(task: Task, modifier: Modifier = Modifier) {
             verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(32.dp)
+                .padding(16.dp)
         ) {
             Text(text = task.name)
-            Text(text = task.projectName)
+            if (hideProjectNames) {
+                Text(text = task.projectName)
+            }
             Text(text = "Project Timelines")
             Text(text = "Created at:${task.createdAt}")
             Text(text = "Deadline:${task.deadline}")

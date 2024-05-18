@@ -6,6 +6,6 @@ import io.github.jerrymatera.projectsmanager.data.network.model.Task
 data class ProjectUIState(
     val project: Project? = null,
     val projectError: String = "",
-    val projectTasks: List<Task>? = emptyList(),
+    val projectTasks: List<Task> = emptyList(),
     val projectTasksError: String = ""
 )

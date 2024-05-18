@@ -38,7 +38,7 @@ class ProjectViewModel(
             }
 
             is NetworkResult.Success -> {
-                _state.value = _state.value.copy(projectTasks = result.body.data)
+                _state.value = _state.value.copy(projectTasks = result.body.data ?: emptyList())
             }
         }
     }

@@ -8,7 +8,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import io.github.jerrymatera.projectsmanager.data.network.model.Project
 import io.github.jerrymatera.projectsmanager.domain.toProject
 import io.github.jerrymatera.projectsmanager.presentation.screens.archives.ArchivedProjectsScreen
 import io.github.jerrymatera.projectsmanager.presentation.screens.home.HomeScreen
@@ -64,7 +63,8 @@ fun AppNavGraph(
             val state = viewModel.state.collectAsStateWithLifecycle()
             ProjectScreen(
                 state = state.value,
-                performEvent = viewModel::performEvent
+                performEvent = viewModel::performEvent,
+                navHostController
             )
         }
     }
