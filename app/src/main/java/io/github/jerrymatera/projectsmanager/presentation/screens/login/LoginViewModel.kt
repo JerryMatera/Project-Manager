@@ -38,8 +38,10 @@ class LoginViewModel(private val authenticationRepository: AuthenticationReposit
                 _state.value = _state.value.copy(loginError = result.body?.message ?: "Something happened")
             }
             is NetworkResult.Success -> {
-                authenticationRepository.saveAccessToken(result.body.data!!.accessToken)
-                _state.value = _state.value.copy(authenticated = true)
+                viewModelScope.launch {
+                    authenticationRepository.saveAccessToken(result.body.data!!.accessToken)
+                    _state.value = _state.value.copy(authenticated = true)
+                }
             }
         }
     }

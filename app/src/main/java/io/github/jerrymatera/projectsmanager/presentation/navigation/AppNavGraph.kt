@@ -8,7 +8,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.github.jerrymatera.projectsmanager.presentation.screens.archives.ArchivedProjectsScreen
-import io.github.jerrymatera.projectsmanager.presentation.screens.createproject.CreateProjectScreen
 import io.github.jerrymatera.projectsmanager.presentation.screens.home.HomeScreen
 import io.github.jerrymatera.projectsmanager.presentation.screens.home.HomeViewModel
 import io.github.jerrymatera.projectsmanager.presentation.screens.login.LoginScreen
@@ -50,9 +49,6 @@ fun AppNavGraph(
         }
         composable(route = ScreenRoutes.Archives.route) {
             ArchivedProjectsScreen()
-        }
-        composable(route = ScreenRoutes.CreateProject.route) {
-            CreateProjectScreen()
         }
     }
 }

@@ -29,6 +29,37 @@ class HomeViewModel(
             is HomeEvent.GetUser -> getUser()
             is HomeEvent.GetProjects -> getProjects()
             is HomeEvent.GetAllTasks -> getAllTasks()
+            is HomeEvent.UpdateProjectDescription -> {
+                _state.value = _state.value.copy(projectDescription = event.description)
+            }
+
+            is HomeEvent.UpdateProjectName -> {
+                _state.value = _state.value.copy(projectName = event.name)
+            }
+
+            is HomeEvent.CreateProject -> createProject()
+            is HomeEvent.ClearProjectCreationError -> {
+                _state.value = _state.value.copy(projectCreationError = "")
+            }
+        }
+    }
+
+    private fun createProject() = viewModelScope.launch {
+        val projectName = _state.value.projectName
+        val projectDescription = _state.value.projectDescription
+        val result =
+            projectsRepository.createProject(name = projectName, description = projectDescription)
+        when (result) {
+            is NetworkResult.Error -> {
+                _state.value = _state.value.copy(
+                    projectCreationError = result.body?.message ?: "Something went wrong"
+                )
+            }
+
+            is NetworkResult.Success -> {
+                _state.value = _state.value.copy(projectCreated = true)
+                performEvent(HomeEvent.GetProjects)
+            }
         }
     }
 

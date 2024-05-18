@@ -11,5 +11,8 @@ data class HomeUIState(
     val projectsError: String = "",
     val tasks: List<Task>? = emptyList(),
     val tasksError: String = "",
-
+    val projectName: String = "",
+    val projectDescription: String = "",
+    val projectCreated:Boolean = false,
+    val projectCreationError:String = "",
 )
