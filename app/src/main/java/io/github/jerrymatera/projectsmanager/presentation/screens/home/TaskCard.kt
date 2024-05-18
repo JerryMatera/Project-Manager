@@ -2,27 +2,22 @@ package io.github.jerrymatera.projectsmanager.presentation.screens.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import io.github.jerrymatera.projectsmanager.data.network.model.ArchivedStatus
+import io.github.jerrymatera.projectsmanager.data.network.model.Task
 import io.github.jerrymatera.projectsmanager.presentation.ui.theme.ProjectsManagerTheme
 
 @Composable
-fun EmptyItemCard(title: String, onAddClick: () -> Unit, modifier: Modifier = Modifier) {
+fun TaskCard(task: Task, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier
             .fillMaxWidth(),
@@ -30,25 +25,38 @@ fun EmptyItemCard(title: String, onAddClick: () -> Unit, modifier: Modifier = Mo
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(32.dp)
         ) {
-            Text(text = title)
-            Spacer(modifier = Modifier.height(16.dp))
-            IconButton(onClick = { onAddClick() }) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Create New Item")
-            }
+            Text(text = task.name)
+            Text(text = task.projectName)
+            Text(text = "Project Timelines")
+            Text(text = "Created at:${task.createdAt}")
+            Text(text = "Deadline:${task.deadline}")
         }
     }
 }
 
+
 @Preview(showSystemUi = true)
 @Composable
-private fun EmptyProjectCardPrev() {
+private fun TaskCardPrev() {
     ProjectsManagerTheme {
-        EmptyItemCard(title = "Create new Item",onAddClick = { /*TODO*/ })
+        TaskCard(
+            task = Task(
+                uuid = "193dd254-95c5-4e24-ac3f-95975f1a03bc",
+                name = "Design",
+                deadline = "2024-06-01T02:00:00Z",
+                createdAt = "2024-05-15T15:50:35Z",
+                projectUuid = "2bc9fbde-8634-4806-9b20-622be40bc718",
+                archivedStatus = ArchivedStatus(
+                    time = "0001-01-01T00:00:00Z",
+                    valid = false
+                ),
+                projectName = "ProjectAI"
+            )
+        )
     }
 }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -75,8 +76,9 @@ fun HomeScreen(
             }
             when {
                 state.projects.isNullOrEmpty() -> {
-                    EmptyProjectCard(createProject = { /*TODO*/ })
+                    EmptyItemCard(title = "You have no projects yet", onAddClick = { /*TODO*/ })
                 }
+
                 else -> {
                     LazyRow {
                         items(state.projects) { project ->
@@ -95,6 +97,19 @@ fun HomeScreen(
                 Text(text = "Recent tasks")
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(imageVector = Icons.Default.ArrowForward, contentDescription = null)
+                }
+            }
+            when {
+                state.tasks.isNullOrEmpty() -> {
+                    EmptyItemCard(title = "You have no tasks yet", onAddClick = { /*TODO*/ })
+                }
+
+                else -> {
+                    LazyColumn {
+                        items(state.tasks) { task ->
+                            TaskCard(task = task)
+                        }
+                    }
                 }
             }
         }
