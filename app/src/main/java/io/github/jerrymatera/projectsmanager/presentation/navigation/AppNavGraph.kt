@@ -17,6 +17,7 @@ import io.github.jerrymatera.projectsmanager.presentation.screens.login.LoginVie
 import io.github.jerrymatera.projectsmanager.presentation.screens.project.ProjectScreen
 import io.github.jerrymatera.projectsmanager.presentation.screens.project.ProjectViewModel
 import io.github.jerrymatera.projectsmanager.presentation.screens.register.RegisterScreen
+import io.github.jerrymatera.projectsmanager.presentation.screens.register.RegisterViewModel
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 import org.koin.core.parameter.parametersOf
@@ -41,7 +42,15 @@ fun AppNavGraph(
             )
         }
         composable<Register> {
-            RegisterScreen()
+            val viewModel: RegisterViewModel = koinViewModel()
+            val state = viewModel.state.collectAsStateWithLifecycle()
+            RegisterScreen(
+                state = state.value,
+                performEvent = viewModel::performEvent,
+                onNavigateUp = {
+                    navHostController.popBackStack()
+                }
+            )
         }
         composable<Home> {
             val viewModel: HomeViewModel = koinViewModel()
