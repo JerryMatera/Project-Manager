@@ -18,6 +18,7 @@ class ProjectViewModel(
 
     init {
         performEvent(ProjectUIEvent.GetProjectTasks)
+        performEvent(ProjectUIEvent.GetProjectArchivedTasks)
     }
 
     fun performEvent(event: ProjectUIEvent) {
@@ -34,9 +35,9 @@ class ProjectViewModel(
 
             is ProjectUIEvent.UpdateTaskDeadlineDate -> {
                 _state.value = _state.value.copy(newTaskDeadlineDate = event.date)
-
             }
 
+            is ProjectUIEvent.GetProjectArchivedTasks -> getArchivedTasks()
         }
     }
 
@@ -74,4 +75,12 @@ class ProjectViewModel(
         }
     }
 
+    private fun getArchivedTasks() = viewModelScope.launch {
+        when (val result = tasksRepository.getArchivedProjectTasks(projectId = project.uuid)) {
+            is NetworkResult.Error -> {}
+            is NetworkResult.Success -> {
+                _state.value = _state.value.copy(archivedTasks = result.body.data ?: emptyList())
+            }
+        }
+    }
 }

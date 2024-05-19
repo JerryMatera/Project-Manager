@@ -1,5 +1,7 @@
 package io.github.jerrymatera.projectsmanager.presentation.screens.project
 
+import android.icu.text.SimpleDateFormat
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,6 +20,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,9 +29,11 @@ import androidx.navigation.NavHostController
 import io.github.jerrymatera.projectsmanager.data.network.model.ArchivedStatus
 import io.github.jerrymatera.projectsmanager.data.network.model.Project
 import io.github.jerrymatera.projectsmanager.data.network.model.Task
+import io.github.jerrymatera.projectsmanager.presentation.ui.components.EmptyItemCard
 import io.github.jerrymatera.projectsmanager.presentation.ui.components.ScreenSection
 import io.github.jerrymatera.projectsmanager.presentation.ui.components.TaskCard
 import io.github.jerrymatera.projectsmanager.presentation.ui.theme.ProjectsManagerTheme
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,7 +47,9 @@ fun ProjectScreen(
         state.createTask -> {
             CreateTaskScreen(state = state, performEvent = performEvent)
         }
+
         else -> {
+            val dateFormatter = remember { SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()) }
             Scaffold(
                 topBar = {
                     TopAppBar(
@@ -65,6 +72,7 @@ fun ProjectScreen(
             ) { innerPadding ->
                 Column(
                     modifier = modifier
+                        .background(MaterialTheme.colorScheme.background)
                         .fillMaxWidth()
                         .padding(innerPadding)
                         .padding(16.dp)
@@ -85,7 +93,7 @@ fun ProjectScreen(
                         sectionTitle = "Created At:",
                         content = {
                             Text(
-                                text = state.project!!.createdAt,
+                                text = dateFormatter.format(state.project!!.createdAt),
                                 style = MaterialTheme.typography.bodyMedium,
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -100,12 +108,36 @@ fun ProjectScreen(
                                 verticalArrangement = Arrangement.spacedBy(8.dp),
                                 contentPadding = PaddingValues(vertical = 16.dp)
                             ) {
-                                items(state.projectTasks) { task ->
-                                    TaskCard(task = task, hideProjectNames = true)
+                                if (state.projectTasks.isEmpty()) {
+                                    item {
+                                        EmptyItemCard(
+                                            title = "No tasks Yet",
+                                            onAddClick = { performEvent(ProjectUIEvent.ShowCreateTaskScreen) })
+                                    }
+                                } else {
+                                    items(state.projectTasks) { task ->
+                                        TaskCard(task = task, hideProjectNames = true)
+                                    }
                                 }
+
                             }
                         }
                     )
+                    if (state.archivedTasks.isNotEmpty()) {
+                        ScreenSection(
+                            sectionTitle = "Archived Tasks",
+                            content = {
+                                LazyColumn(
+                                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                                    contentPadding = PaddingValues(vertical = 16.dp)
+                                ) {
+                                    items(state.archivedTasks) { task ->
+                                        TaskCard(task = task, hideProjectNames = true)
+                                    }
+                                }
+                            }
+                        )
+                    }
                 }
             }
         }

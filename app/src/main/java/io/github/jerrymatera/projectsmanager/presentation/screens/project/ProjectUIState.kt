@@ -14,5 +14,6 @@ data class ProjectUIState(
     val newTaskDeadlineDate: String = "",
     val newTaskDeadlineTime: String = "",
     val taskCreationSuccess: Boolean = false,
-    val taskCreationError: String = ""
+    val taskCreationError: String = "",
+    val archivedTasks: List<Task> = emptyList(),
 )

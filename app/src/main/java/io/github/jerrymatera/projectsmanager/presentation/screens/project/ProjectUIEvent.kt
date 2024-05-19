@@ -5,5 +5,6 @@ sealed class ProjectUIEvent {
     data class UpdateTaskDeadlineDate(val date: String) : ProjectUIEvent()
     data object ShowCreateTaskScreen : ProjectUIEvent()
     data object GetProjectTasks : ProjectUIEvent()
+    data object GetProjectArchivedTasks : ProjectUIEvent()
     data object AddTask : ProjectUIEvent()
 }

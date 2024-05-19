@@ -1,6 +1,7 @@
 package io.github.jerrymatera.projectsmanager.presentation.screens.project
 
 import android.icu.text.SimpleDateFormat
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -67,6 +68,7 @@ fun CreateTaskScreen(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier
+                .background(MaterialTheme.colorScheme.background)
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(16.dp)
