@@ -26,8 +26,8 @@ import androidx.navigation.NavHostController
 import io.github.jerrymatera.projectsmanager.data.network.model.ArchivedStatus
 import io.github.jerrymatera.projectsmanager.data.network.model.Project
 import io.github.jerrymatera.projectsmanager.data.network.model.Task
-import io.github.jerrymatera.projectsmanager.presentation.screens.home.TaskCard
 import io.github.jerrymatera.projectsmanager.presentation.ui.components.ScreenSection
+import io.github.jerrymatera.projectsmanager.presentation.ui.components.TaskCard
 import io.github.jerrymatera.projectsmanager.presentation.ui.theme.ProjectsManagerTheme
 
 @OptIn(ExperimentalMaterial3Api::class)

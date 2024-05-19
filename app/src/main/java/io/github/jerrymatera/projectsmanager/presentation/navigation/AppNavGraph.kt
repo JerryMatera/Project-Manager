@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import io.github.jerrymatera.projectsmanager.domain.toProject
 import io.github.jerrymatera.projectsmanager.presentation.screens.archives.ArchivedProjectsScreen
+import io.github.jerrymatera.projectsmanager.presentation.screens.archives.ArchivedProjectsViewModel
 import io.github.jerrymatera.projectsmanager.presentation.screens.home.HomeScreen
 import io.github.jerrymatera.projectsmanager.presentation.screens.home.HomeViewModel
 import io.github.jerrymatera.projectsmanager.presentation.screens.login.LoginScreen
@@ -62,7 +63,11 @@ fun AppNavGraph(
             )
         }
         composable<Archives> {
-            ArchivedProjectsScreen()
+            val viewModel: ArchivedProjectsViewModel = koinViewModel()
+            val state = viewModel.state.collectAsStateWithLifecycle()
+            ArchivedProjectsScreen(
+                state = state.value,
+                onNavigateUp = { navHostController.popBackStack() })
         }
         composable<ProjectRoute> {
             val project = it.toRoute<ProjectRoute>()

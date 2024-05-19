@@ -1,4 +1,4 @@
-package io.github.jerrymatera.projectsmanager.presentation.screens.home
+package io.github.jerrymatera.projectsmanager.presentation.ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
