@@ -42,6 +42,10 @@ val networkModule = module {
 
             install(Auth) {
                 bearer {
+                    sendWithoutRequest {
+                        it.url.host.contains("login")
+                        it.url.host.contains("register")
+                    }
                     loadTokens {
                         BearerTokens(
                             accessToken = userPrefsStore.accessToken.first().toString(),

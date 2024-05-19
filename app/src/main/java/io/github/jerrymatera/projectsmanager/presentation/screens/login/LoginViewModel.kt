@@ -8,7 +8,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class LoginViewModel(private val authenticationRepository: AuthenticationRepository, ) : ViewModel() {
+class LoginViewModel(
+    private val authenticationRepository: AuthenticationRepository,
+) :
+    ViewModel() {
     private val _state = MutableStateFlow(value = LoginUIState())
     val state: StateFlow<LoginUIState> = _state
 
@@ -35,14 +38,15 @@ class LoginViewModel(private val authenticationRepository: AuthenticationReposit
         )
         when (result) {
             is NetworkResult.Error -> {
-                _state.value = _state.value.copy(loginError = result.body?.message ?: "Something happened")
+                _state.value =
+                    _state.value.copy(loginError = result.body?.message ?: "Something happened")
             }
+
             is NetworkResult.Success -> {
-                viewModelScope.launch {
-                    authenticationRepository.saveAccessToken(result.body.data!!.accessToken)
-                    _state.value = _state.value.copy(authenticated = true)
-                }
+                authenticationRepository.saveAccessToken(result.body.data!!.accessToken)
+                _state.value = _state.value.copy(authenticated = true)
             }
         }
     }
+
 }

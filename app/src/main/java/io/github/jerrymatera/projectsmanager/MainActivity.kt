@@ -12,6 +12,7 @@ import io.github.jerrymatera.projectsmanager.presentation.navigation.AppNavGraph
 import io.github.jerrymatera.projectsmanager.presentation.ui.theme.ProjectsManagerTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

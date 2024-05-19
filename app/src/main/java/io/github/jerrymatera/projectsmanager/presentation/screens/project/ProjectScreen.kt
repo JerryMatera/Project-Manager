@@ -27,6 +27,7 @@ import io.github.jerrymatera.projectsmanager.data.network.model.ArchivedStatus
 import io.github.jerrymatera.projectsmanager.data.network.model.Project
 import io.github.jerrymatera.projectsmanager.data.network.model.Task
 import io.github.jerrymatera.projectsmanager.presentation.screens.home.TaskCard
+import io.github.jerrymatera.projectsmanager.presentation.ui.components.ScreenSection
 import io.github.jerrymatera.projectsmanager.presentation.ui.theme.ProjectsManagerTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,88 +38,80 @@ fun ProjectScreen(
     navHostController: NavHostController,
     modifier: Modifier = Modifier
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(text = state.project!!.name) },
-                navigationIcon = {
-                    IconButton(onClick = { navHostController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
-                        )
-                    }
-                }
-            )
-        },
-        floatingActionButton = {
-            IconButton(onClick = { performEvent(ProjectUIEvent.AddTask) }) {
-                Icon(imageVector = Icons.Filled.Add, contentDescription = "Add")
-            }
+    when {
+        state.createTask -> {
+            CreateTaskScreen(state = state, performEvent = performEvent)
         }
-    ) { innerPadding ->
-        Column(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(innerPadding)
-                .padding(16.dp)
-        ) {
-            ScreenSection(
-                sectionTitle = "Project Description",
-                content = {
-                    Text(
-                        text = state.project!!.description,
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 8.dp)
-                    )
-                }
-            )
-            ScreenSection(
-                sectionTitle = "Created At:",
-                content = {
-                    Text(
-                        text = state.project!!.createdAt,
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 8.dp)
-                    )
-                }
-            )
-            ScreenSection(
-                sectionTitle = "Tasks",
-                content = {
-                    LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                        contentPadding = PaddingValues(vertical = 16.dp)
-                    ) {
-                        items(state.projectTasks) { task ->
-                            TaskCard(task = task, hideProjectNames = true)
+        else -> {
+            Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = { Text(text = state.project!!.name) },
+                        navigationIcon = {
+                            IconButton(onClick = { navHostController.popBackStack() }) {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                    contentDescription = "Back"
+                                )
+                            }
                         }
+                    )
+                },
+                floatingActionButton = {
+                    IconButton(onClick = { performEvent(ProjectUIEvent.ShowCreateTaskScreen) }) {
+                        Icon(imageVector = Icons.Filled.Add, contentDescription = "Add")
                     }
                 }
-            )
+            ) { innerPadding ->
+                Column(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(innerPadding)
+                        .padding(16.dp)
+                ) {
+                    ScreenSection(
+                        sectionTitle = "Project Description",
+                        content = {
+                            Text(
+                                text = state.project!!.description,
+                                style = MaterialTheme.typography.bodyMedium,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 8.dp)
+                            )
+                        }
+                    )
+                    ScreenSection(
+                        sectionTitle = "Created At:",
+                        content = {
+                            Text(
+                                text = state.project!!.createdAt,
+                                style = MaterialTheme.typography.bodyMedium,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 8.dp)
+                            )
+                        }
+                    )
+                    ScreenSection(
+                        sectionTitle = "Tasks",
+                        content = {
+                            LazyColumn(
+                                verticalArrangement = Arrangement.spacedBy(8.dp),
+                                contentPadding = PaddingValues(vertical = 16.dp)
+                            ) {
+                                items(state.projectTasks) { task ->
+                                    TaskCard(task = task, hideProjectNames = true)
+                                }
+                            }
+                        }
+                    )
+                }
+            }
         }
     }
 }
 
-@Composable
-fun ScreenSection(
-    sectionTitle: String,
-    content: @Composable () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-    ) {
-        Text(text = sectionTitle, style = MaterialTheme.typography.titleMedium)
-        content()
-    }
-}
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
