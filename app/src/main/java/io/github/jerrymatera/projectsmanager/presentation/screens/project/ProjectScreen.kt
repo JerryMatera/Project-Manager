@@ -1,6 +1,5 @@
 package io.github.jerrymatera.projectsmanager.presentation.screens.project
 
-import android.icu.text.SimpleDateFormat
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,7 +19,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,7 +31,6 @@ import io.github.jerrymatera.projectsmanager.presentation.ui.components.EmptyIte
 import io.github.jerrymatera.projectsmanager.presentation.ui.components.ScreenSection
 import io.github.jerrymatera.projectsmanager.presentation.ui.components.TaskCard
 import io.github.jerrymatera.projectsmanager.presentation.ui.theme.ProjectsManagerTheme
-import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,7 +46,6 @@ fun ProjectScreen(
         }
 
         else -> {
-            val dateFormatter = remember { SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()) }
             Scaffold(
                 topBar = {
                     TopAppBar(
@@ -93,7 +89,7 @@ fun ProjectScreen(
                         sectionTitle = "Created At:",
                         content = {
                             Text(
-                                text = dateFormatter.format(state.project!!.createdAt),
+                                text = state.project!!.createdAt,
                                 style = MaterialTheme.typography.bodyMedium,
                                 modifier = Modifier
                                     .fillMaxWidth()

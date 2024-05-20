@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -32,15 +33,20 @@ fun TaskCard(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(8.dp)
         ) {
-            Text(text = task.name)
+            Text(text = task.name, style = MaterialTheme.typography.titleLarge)
             if (hideProjectNames) {
-                Text(text = task.projectName)
+                Text(text = task.projectName, style = MaterialTheme.typography.titleSmall)
             }
-            Text(text = "Project Timelines")
-            Text(text = "Created at:${task.createdAt}")
-            Text(text = "Deadline:${task.deadline}")
+            ScreenSection(
+                sectionTitle = "Project Timelines",
+                content = {
+                    Column {
+                        Text(text = "Created at:${task.createdAt}")
+                        Text(text = "Deadline:${task.deadline}")
+                    }
+                })
         }
     }
 }
