@@ -19,26 +19,26 @@ class HomeViewModel(
     val state: StateFlow<HomeUIState> = _state
 
     init {
-        performEvent(HomeEvent.GetUser)
-        performEvent(HomeEvent.GetProjects)
-        performEvent(HomeEvent.GetAllTasks)
+        performEvent(HomeUIEvent.GetUser)
+        performEvent(HomeUIEvent.GetProjects)
+        performEvent(HomeUIEvent.GetAllTasks)
     }
 
-    fun performEvent(event: HomeEvent) {
+    fun performEvent(event: HomeUIEvent) {
         when (event) {
-            is HomeEvent.GetUser -> getUser()
-            is HomeEvent.GetProjects -> getProjects()
-            is HomeEvent.GetAllTasks -> getAllTasks()
-            is HomeEvent.UpdateProjectDescription -> {
+            is HomeUIEvent.GetUser -> getUser()
+            is HomeUIEvent.GetProjects -> getProjects()
+            is HomeUIEvent.GetAllTasks -> getAllTasks()
+            is HomeUIEvent.UpdateProjectDescription -> {
                 _state.value = _state.value.copy(projectDescription = event.description)
             }
 
-            is HomeEvent.UpdateProjectName -> {
+            is HomeUIEvent.UpdateProjectName -> {
                 _state.value = _state.value.copy(projectName = event.name)
             }
 
-            is HomeEvent.CreateProject -> createProject()
-            is HomeEvent.ClearProjectCreationError -> {
+            is HomeUIEvent.CreateProject -> createProject()
+            is HomeUIEvent.ClearProjectCreationError -> {
                 _state.value = _state.value.copy(projectCreationError = "")
             }
         }
@@ -58,7 +58,7 @@ class HomeViewModel(
 
             is NetworkResult.Success -> {
                 _state.value = _state.value.copy(projectCreated = true)
-                performEvent(HomeEvent.GetProjects)
+                performEvent(HomeUIEvent.GetProjects)
             }
         }
     }

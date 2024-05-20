@@ -34,7 +34,7 @@ fun EmptyItemCard(title: String, onAddClick: () -> Unit, modifier: Modifier = Mo
             verticalArrangement = Arrangement.Center,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(32.dp)
+                .padding(16.dp)
         ) {
             Text(text = title)
             Spacer(modifier = Modifier.height(16.dp))
