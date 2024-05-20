@@ -99,6 +99,7 @@ fun ProjectScreen(
                     )
                     ScreenSection(
                         sectionTitle = "Tasks",
+                        sectionTitleStyle = MaterialTheme.typography.titleLarge,
                         content = {
                             LazyColumn(
                                 verticalArrangement = Arrangement.spacedBy(8.dp),

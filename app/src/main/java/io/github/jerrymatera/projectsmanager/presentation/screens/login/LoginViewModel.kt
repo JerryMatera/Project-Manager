@@ -26,14 +26,14 @@ class LoginViewModel(
             }
 
             is LoginEvent.UpdateUsernameOrEmail -> {
-                _state.value = _state.value.copy(usernameOrEmail = event.usernameOrEmail)
+                _state.value = _state.value.copy(email = event.usernameOrEmail)
             }
         }
     }
 
     private fun login() = viewModelScope.launch {
         val result = authenticationRepository.login(
-            usernameOrEmail = _state.value.usernameOrEmail,
+            usernameOrEmail = _state.value.email,
             password = _state.value.password
         )
         when (result) {
