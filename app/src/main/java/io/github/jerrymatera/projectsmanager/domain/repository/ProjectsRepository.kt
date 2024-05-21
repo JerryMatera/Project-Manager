@@ -12,13 +12,12 @@ interface ProjectsRepository {
 
     suspend fun getProjects(): NetworkResult<NetworkResponse<List<Project>?>>
     suspend fun getArchivedProjects(): NetworkResult<NetworkResponse<List<Project>?>>
-//    suspend fun archiveProject(projectId: String): NetworkResult<NetworkResponse<Nothing?>>
+    suspend fun archiveProject(projectId: String): NetworkResult<NetworkResponse<Unit>>
     suspend fun updateProject(
         projectId: String,
         name: String,
         description: String
     ): NetworkResult<NetworkResponse<Nothing>>
 
-//    suspend fun unArchiveProject(projectId: String): NetworkResult<NetworkResponse<Nothing>>
-
+    suspend fun unArchiveProject(projectId: String): NetworkResult<NetworkResponse<Nothing>>
 }

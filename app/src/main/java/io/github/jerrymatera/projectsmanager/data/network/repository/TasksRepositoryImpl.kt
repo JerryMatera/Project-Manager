@@ -45,8 +45,8 @@ class TasksRepositoryImpl(private val responseHandler: ResponseHandler) : TasksR
     )
 
     override suspend fun archiveProjectTask(taskId: String): NetworkResult<NetworkResponse<Nothing>> =
-        TODO()
+        responseHandler.delete(urlPathSegments = listOf("project-tasks", taskId))
 
     override suspend fun unArchiveProjectTask(taskId: String): NetworkResult<NetworkResponse<Nothing>> =
-        TODO()
+        responseHandler.put(urlPathSegments = listOf("unarchive-project-task", taskId))
 }

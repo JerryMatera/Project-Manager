@@ -96,12 +96,17 @@ class ResponseHandler(val httpClient: HttpClient) {
         body = body,
     )
 
-    suspend inline fun <reified B, reified R> delete(
+    suspend inline fun <reified R> put(
         urlPathSegments: List<Any>,
-        body: B? = null,
-    ): NetworkResult<R> = executeRequest(
+    ): NetworkResult<R> = executeRequest<Any?, R>(
+        method = HttpMethod.Put,
+        urlPathSegments = urlPathSegments.toList(),
+    )
+
+    suspend inline fun <reified R> delete(
+        urlPathSegments: List<Any>,
+    ): NetworkResult<R> = executeRequest<Any?, R>(
         method = HttpMethod.Delete,
         urlPathSegments = urlPathSegments.toList(),
-        body = body,
     )
 }
