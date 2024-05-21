@@ -16,4 +16,6 @@ data class ProjectUIState(
     val taskCreationSuccess: Boolean = false,
     val taskCreationError: String = "",
     val archivedTasks: List<Task> = emptyList(),
+    val archiveProjectError: String = "",
+    val archiveProjectSuccess: Boolean = false
 )

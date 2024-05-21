@@ -4,12 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.jerrymatera.projectsmanager.data.network.model.Project
 import io.github.jerrymatera.projectsmanager.data.utils.NetworkResult
+import io.github.jerrymatera.projectsmanager.domain.repository.ProjectsRepository
 import io.github.jerrymatera.projectsmanager.domain.repository.TasksRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class ProjectViewModel(
+    private val projectsRepository: ProjectsRepository,
     private val tasksRepository: TasksRepository,
     private val project: Project,
 ) : ViewModel() {
@@ -38,6 +40,25 @@ class ProjectViewModel(
             }
 
             is ProjectUIEvent.GetProjectArchivedTasks -> getArchivedTasks()
+            is ProjectUIEvent.ArchiveProject -> archiveProject()
+            is ProjectUIEvent.UpdateArchiveProjectError -> {
+                _state.value = _state.value.copy(archiveProjectError = event.s)
+
+            }
+        }
+    }
+
+    private fun archiveProject() = viewModelScope.launch {
+        when (val result = projectsRepository.archiveProject(projectId = project.uuid)) {
+            is NetworkResult.Error -> {
+                _state.value = _state.value.copy(
+                    archiveProjectError = result.body?.message ?: "Something went wrong"
+                )
+            }
+
+            is NetworkResult.Success -> {
+                _state.value = _state.value.copy(archiveProjectSuccess = true)
+            }
         }
     }
 
