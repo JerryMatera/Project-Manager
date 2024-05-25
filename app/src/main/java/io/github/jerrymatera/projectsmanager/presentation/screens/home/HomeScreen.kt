@@ -53,6 +53,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier
 ) {
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
+    var viewAllProjects by rememberSaveable { mutableStateOf(false) }
 
     if (showBottomSheet) {
         CreateProjectScreen(
@@ -61,81 +62,95 @@ fun HomeScreen(
             performEvent = performEvent
         )
     } else {
-        Scaffold(
-            topBar = {
-                HomeTopAppBar(
-                    username = state.user?.username ?: "",
-                    goToProfile = {  },
-                    goToArchives = { navHostController.navigate(Archives) })
-            },
-            floatingActionButton = {
-                IconButton(onClick = { showBottomSheet = true }) {
-                    Icon(imageVector = Icons.Default.Add, contentDescription = "Create New Project")
-                }
+        if (viewAllProjects) {
+            state.projects?.let {
+                AllProjectsScreen(
+                    projects = it,
+                    navHostController = navHostController,
+                    onNavigateUp = { viewAllProjects = false })
             }
-        ) { innerPadding ->
-            Column(
-                modifier = modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-                    .padding(top = 16.dp, start = 16.dp, end = 16.dp)
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 8.dp)
-                ) {
-                    Text(text = "Projects")
-                    IconButton(onClick = { }) {
+        } else {
+            Scaffold(
+                topBar = {
+                    HomeTopAppBar(
+                        username = state.user?.username ?: "",
+                        goToProfile = { },
+                        goToArchives = { navHostController.navigate(Archives) })
+                },
+                floatingActionButton = {
+                    IconButton(onClick = { showBottomSheet = true }) {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                            contentDescription = null
+                            imageVector = Icons.Default.Add,
+                            contentDescription = "Create New Project"
                         )
                     }
                 }
-                if (state.projects.isNullOrEmpty()) {
-                    EmptyItemCard(
-                        title = "You have no projects yet",
-                        onAddClick = { showBottomSheet = true })
-                } else {
-                    LazyRow(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        contentPadding = PaddingValues(16.dp)
+            ) { innerPadding ->
+                Column(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                        .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp)
                     ) {
-                        items(state.projects) { project ->
-                            ProjectCard(
-                                project = project,
-                                onClick = { navHostController.navigate(project.toRoute()) }
+                        Text(text = "Projects")
+                        if (!state.projects.isNullOrEmpty()) {
+                            IconButton(onClick = { viewAllProjects = true }) {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                                    contentDescription = null
+                                )
+                            }
+                        }
+                    }
+                    if (state.projects.isNullOrEmpty()) {
+                        EmptyItemCard(
+                            title = "You have no projects yet",
+                            onAddClick = { showBottomSheet = true })
+                    } else {
+                        LazyRow(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            contentPadding = PaddingValues(16.dp)
+                        ) {
+                            items(state.projects) { project ->
+                                ProjectCard(
+                                    project = project,
+                                    onClick = { navHostController.navigate(project.toRoute()) }
+                                )
+                            }
+                        }
+                    }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                    ) {
+                        Text(text = "Recent tasks")
+                        IconButton(onClick = { }) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                                contentDescription = null
                             )
                         }
                     }
-                }
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp)
-                ) {
-                    Text(text = "Recent tasks")
-                    IconButton(onClick = { }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                            contentDescription = null
-                        )
-                    }
-                }
-                if (state.tasks.isNullOrEmpty()) {
-                    EmptyItemCard(title = "You have no tasks yet", onAddClick = { /*TODO*/ })
-                } else {
-                    LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                        contentPadding = PaddingValues(vertical = 8.dp)
-                    ) {
-                        items(state.tasks) { task ->
-                            TaskCard(task = task)
+                    if (state.tasks.isNullOrEmpty()) {
+                        EmptyItemCard(title = "You have no tasks yet", onAddClick = { /*TODO*/ })
+                    } else {
+                        LazyColumn(
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                            contentPadding = PaddingValues(vertical = 8.dp)
+                        ) {
+                            items(state.tasks) { task ->
+                                TaskCard(task = task)
+                            }
                         }
                     }
                 }
